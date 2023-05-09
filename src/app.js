@@ -2,8 +2,9 @@ import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import bodyParser from 'body-parser';
 
-import registerRoutes from './Routes/registerRoutes.js'
+import registerRoutes from './Routes/userRoutes.js'
 
 dotenv.config();
 
@@ -33,12 +34,13 @@ class App {
   middlewares() {
     this.app.use(cors());
     this.app.use(helmet());
+    this.app.use(bodyParser.json({ extended: true }));
     this.app.use(express.urlencoded({ extend: true }));
     this.app.use(express.json());
   }
 
   routes() {
-    this.app.use('/', registerRoutes);
+    this.app.use('/user', registerRoutes);
   }
 }
 
