@@ -4,7 +4,8 @@ const userSchema = mongoose.Schema(
   {
     name: {
       type: 'string',
-      required: 'Name is required!'
+      required: 'Name is required!',
+      minlength: [3, 'Min name length is 3!'],
     },
 
     email: {
@@ -47,16 +48,17 @@ const userSchema = mongoose.Schema(
     },
 
     bornDate: {
-      type: Date,
+      type: [Date, 'Error type is not date'],
       required: false,
       default: ''
     },
 
-    genero: {
+    gender: {
       type: 'string',
       trim: true,
       required: false,
-      default: ''
+      default: '',
+      minlength: [3, 'Min gender length is 3!'],
     },
 
     type: {
