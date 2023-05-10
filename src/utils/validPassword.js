@@ -1,14 +1,18 @@
-import bcrypt from 'bcrypt'
+import bcrypt, { hash } from 'bcrypt'
 import dotenv from 'dotenv'
 
 dotenv.config()
 
-const salt = bcrypt.genSaltSync(10);
-
 export const encrypt = value => {
-  const encrypted = bcrypt.hashSync(value, 10);
-  if(validPassword(value)) return encrypted;
-  return ''
+  if(!validPassword) return '';
+  const salt = bcrypt.genSaltSync(12);
+  const hash = bcrypt.hashSync(value, salt);
+  return hash;
+}
+
+export const compareHash = (value, hashed) => {
+  if(!validPassword) return '';
+  return bcrypt.compareSync(value, hashed);
 }
 
 export const validPassword = value => {

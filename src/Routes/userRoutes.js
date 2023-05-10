@@ -8,6 +8,7 @@ router.get('/:dataBaseName/:id', userController.show);
 router.post('/:dataBaseName/register', userController.register)
 router.delete('/:dataBaseName/:id', userController.delete)
 router.put('/:dataBaseName/:id', userController.update)
+router.post('/:dataBaseName/', userController.login)
 
 
 export default router;
