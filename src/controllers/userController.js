@@ -14,7 +14,6 @@ class userController {
       return res.status(200).json({status: 'ok', user: userLogged, login: true})
 
     } catch(err) {
-      console.log(err)
       return res.status(400).json({status: 'error', error: err, login: false});
     }
   }
@@ -43,17 +42,25 @@ class userController {
   }
 
   async show(req, res) {
-    const {dataBaseName, id} = req.params;
-    const users = await User.find({dataBase: dataBaseName, _id: id});
-    if(users.length === 0) return res.status(404).json({status: 'error', error:'Not Found'});
-    return res.status(200).json(users);
+    try {
+      const {dataBaseName, id} = req.params;
+      const users = await User.find({dataBase: dataBaseName, _id: id});
+      if(users.length === 0) return res.status(404).json({status: 'error', error:'Not Found'});
+      return res.status(200).json(users);
+    } catch(err) {
+      return res.status(200).json({status: 'error', error: err});
+    }
   }
 
   async index(req, res) {
-    const { dataBaseName } = req.params;
-    const users = await User.find({dataBase: dataBaseName});
-    if(users.length === 0) return res.status(404).json({status: 'error', error:'Not Found'});
-    return res.json(users);
+    try {
+      const { dataBaseName } = req.params;
+      const users = await User.find({dataBase: dataBaseName});
+      if(users.length === 0) return res.status(404).json({status: 'error', error:'Not Found'});
+      return res.status(200).json(users);
+    } catch(err) {
+      return res.status(200).json({status: 'error', error: err});
+    }
   }
 
   async register(req, res) {

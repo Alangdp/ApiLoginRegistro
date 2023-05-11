@@ -4,7 +4,9 @@ import cors from 'cors';
 import helmet from 'helmet';
 import bodyParser from 'body-parser';
 
-import registerRoutes from './Routes/userRoutes.js'
+import dataBaseRoutes from './Routes/databaseRoutes.js'
+import userRoutes from './Routes/userRoutes.js'
+
 
 dotenv.config();
 
@@ -40,7 +42,8 @@ class App {
   }
 
   routes() {
-    this.app.use('/user', registerRoutes);
+    this.app.use('/user', userRoutes);
+    this.app.use('/database', dataBaseRoutes);
   }
 }
 

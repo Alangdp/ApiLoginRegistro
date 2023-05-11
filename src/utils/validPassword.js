@@ -20,3 +20,17 @@ export const validPassword = value => {
   if(!value.match(re)) return;
   return value
 }
+
+export const genToken = (passLength = 6) => {
+  const date = new Date();
+  var chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJLMNOPQRSTUVWXYZ!@#$%^&*()+?><:{}[]";
+  var passwordLength = passLength;
+  var password = "";
+
+  for (var i = 0; i < passwordLength; i++) {
+    var randomNumber = Math.floor(Math.random() * chars.length);
+    password += chars.substring(randomNumber, randomNumber + 1);
+  }
+  return `${password}.${date.getMilliseconds()}`
+}
+
