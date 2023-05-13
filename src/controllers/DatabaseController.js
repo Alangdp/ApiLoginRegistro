@@ -4,7 +4,16 @@ import { compareHash, encrypt } from '../utils/validPassword.js'
 
 class userController {
   async login(req, res) {
+    const data = req.body;
 
+    try{
+      const DataBase = new Database(data);
+      const login = await DataBase.login()
+      if(login[0]) return res.status(200).json({status: 'ok', database: login[1]})
+      return res.status(401).json({status: 'error', error: 'DBPassword or DBToken invalid'});
+    }catch(err) {
+      return res.status(401).json({status: 'error', error: err.message});
+    }
   }
 
   async update(req, res) {

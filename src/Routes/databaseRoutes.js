@@ -4,7 +4,8 @@ import DatabaseController from '../controllers/DatabaseController.js';
 
 const router = new Router();
 
-router.post('/post', DatabaseController.register);
+router.post('/', DatabaseController.register);
+router.post('/login', DatabaseController.login);
 
 
 export default router;

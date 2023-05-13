@@ -1,28 +1,39 @@
-import DataBaseMongo from '../schema/databaseSchema.js'
-import User from '../schema/userModel.js'
+import bcrypt from 'bcrypt';
 
-import { compareHash, encrypt, genToken } from '../utils/validPassword.js'
+import DataBaseMongo from '../schema/databaseSchema.js';
+import User from '../schema/userModel.js';
+
+import { compareHash, encrypt, genToken } from '../utils/validPassword.js';
 
 export default class Admin {
   constructor(databaseData) {
+    let token = databaseData.DBToken
     this.data = {
       DBName: databaseData.DBName,
       DBPassword: encrypt(databaseData.DBPassword),
-      DBToken: genToken(),
+      DBPasswordBase: databaseData.DBPassword,
+      DBToken: token || genToken(),
       CreateBy: databaseData.CreateBy
     };
 
-    this.isCreate()
   }
 
-  async isCreate() {
-    if(await !this.userExist() === true) this.data.CreateBy = '';
+  async login() {
+    try{
+      const DBInfo = await DataBaseMongo.findOne({DBToken: this.data.DBToken})
+      const DBPasswordInfo = DBInfo.DBPassword;
+      if(bcrypt.compareSync(this.data.DBPasswordBase, DBPasswordInfo)) return [true, DBInfo]
+      return [false, DBInfo]
+    } catch(err) {
+
+      return [false, err];
+    }
   }
 
   async userExist() {
     try {
-      const userExist = await User.findOne({_id: this.data.CreateBy});
-      return true;
+      const userExist = await User.findById(this.data.CreateBy);
+      return [true, userExist];
     } catch (err) {
       return false
     }
@@ -30,7 +41,8 @@ export default class Admin {
 
   async userHaveDatabase() {
     try {
-      const userExist = await DataBaseMongo.findOne({CreateBy: this.data.CreateBy});
+      const DataBaseExist = await DataBaseMongo.find({CreateBy: this.data.CreateBy});
+      if (DataBaseExist.length > 1 ) return false
       return true;
     } catch (err) {
       return false
@@ -39,7 +51,7 @@ export default class Admin {
 
   async createDataBase() {
     try{
-      if(this.userHaveDatabase) throw new Error('limit has been exceeded')
+      if(this.userHaveDatabase()) throw new Error('limit has been exceeded')
       const newDatabaseInfo = await DataBaseMongo.create(this.data);
       return {isOk: true, data: newDatabaseInfo};;
     } catch(err) {
