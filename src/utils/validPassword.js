@@ -3,8 +3,10 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
+const re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/
+
 export const encrypt = value => {
-  if(!validPassword) return '';
+  if(!validPassword(value)) throw new Error('Invalid Password');
   const salt = bcrypt.genSaltSync(12);
   const hash = bcrypt.hashSync(value, salt);
   return hash;
@@ -16,9 +18,8 @@ export const compareHash = (value, hashed) => {
 }
 
 export const validPassword = value => {
-  const re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/
-  if(!value.match(re)) return;
-  return value
+  if(value.match(re) !== null) return true;
+  return false
 }
 
 export const genToken = (passLength = 6) => {
@@ -33,4 +34,5 @@ export const genToken = (passLength = 6) => {
   }
   return `${password}.${date.getMilliseconds()}`
 }
+
 

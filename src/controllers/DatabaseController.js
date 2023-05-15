@@ -9,15 +9,25 @@ class userController {
     try{
       const DataBase = new Database(data);
       const login = await DataBase.login()
-      if(login[0]) return res.status(200).json({status: 'ok', database: login[1]})
+      if(login.isOk) return res.status(200).json({status: 'ok', database: login.data})
       return res.status(401).json({status: 'error', error: 'DBPassword or DBToken invalid'});
     }catch(err) {
+      console.log(err)
       return res.status(401).json({status: 'error', error: err.message});
     }
   }
 
   async update(req, res) {
+    const data = req.body;
 
+    try{
+      const DataBase = new Database(data);
+      const update = await DataBase.update()
+      if(update.isOk === true) return res.status(200).json({status: 'ok', database: update.data})
+      return res.status(401).json({status: 'error', error: 'DBPassword or DBToken invalid'});
+    }catch(err) {
+      return res.status(401).json({status: 'error', error: err.message});
+    }
   }
 
   async delete(req, res) {
