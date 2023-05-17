@@ -11,12 +11,11 @@ export default class Admin {
     let actualPassword = databaseData.DBPassword;
     let newPassword = databaseData.DBNewPassword;
     if(actualPassword === newPassword) newPassword = '';
-    // console.log(actualPassword, newPassword, databaseData)
     this.data = {
       DBName: databaseData.DBName,
       DBPassword: encrypt(actualPassword),
       DBPasswordBase: actualPassword,
-      DBNewPassword: encrypt(newPassword),
+      DBNewPassword: newPassword,
       DBToken: token || genToken(),
       CreateBy: databaseData.CreateBy
     };
@@ -27,7 +26,7 @@ export default class Admin {
     try{
       const login = await this.login();
       if(login.isOk !== true) return {isOk: false, data: 'DB Login invalid'};
-      const UpdatedDB = await DataBaseMongo.updateOne({DBToken: this.data.DBToken}, {DBPassword: this.data.DBNewPassword, DBName: this.data.DBName})
+      const UpdatedDB = await DataBaseMongo.updateOne({DBToken: this.data.DBToken}, {DBPassword: encrypt(this.data.DBNewPassword), DBName: this.data.DBName})
       return {isOk: true, data: UpdatedDB};
     }catch(err) {
       console.log(err);
@@ -39,11 +38,11 @@ export default class Admin {
     try{
       const DBInfo = await DataBaseMongo.findOne({DBToken: this.data.DBToken})
       const DBPasswordInfo = DBInfo.DBPassword;
+      console.log(bcrypt.compareSync(this.data.DBPasswordBase, DBPasswordInfo))
       if(bcrypt.compareSync(this.data.DBPasswordBase, DBPasswordInfo)) return {isOk: true, data: DBInfo};
       return {isOk: false, data: DBInfo};
     } catch(err) {
-      console.log(err)
-      return {isOk: false, data: err};
+      return {isOk: false, data: err.message};
     }
   }
 

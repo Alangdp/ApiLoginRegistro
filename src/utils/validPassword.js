@@ -6,19 +6,24 @@ dotenv.config()
 const re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/
 
 export const encrypt = value => {
-  if(!validPassword(value)) throw new Error('Invalid Password');
+  const validPassword = validatePassword(value)
+  console.log(validPassword)
+  if (validPassword === undefined) return '';
+  if (!validPassword) throw new Error('Invalid Password');
   const salt = bcrypt.genSaltSync(12);
   const hash = bcrypt.hashSync(value, salt);
   return hash;
 }
 
 export const compareHash = (value, hashed) => {
-  if(!validPassword) return '';
+  if(!validatePassword) return '';
   return bcrypt.compareSync(value, hashed);
 }
 
-export const validPassword = value => {
-  if(value.match(re) !== null) return true;
+export const validatePassword = value => {
+  console.log(value, 'valid')
+  if (value === undefined || value === null || value === '') return undefined;
+  if (value.match(re) !== null) return true;
   return false
 }
 

@@ -36,6 +36,7 @@ class userController {
 
   async register(req, res) {
     const data = req.body;
+    console.log(data)
     for(let key of ['DBName', 'DBPassword', 'CreateBy']){
       if(!Object.keys(data).includes(key)) {
         return res.status(401).json({status: 'error', error: 'missing one of the fields DBName or DBPassword'})
