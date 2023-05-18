@@ -10,7 +10,7 @@ router.get('/:id', loginInDB, userController.show);
 router.post('/register', loginInDB, userController.register)
 router.delete('/:id', loginInDB, userController.delete)
 router.put('/:id', loginInDB, userController.update)
-router.post('/', userController.login)
+router.post('/login', userController.login)
 
 
 export default router;
