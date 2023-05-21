@@ -12,7 +12,6 @@ class userController {
       if(login.isOk) return res.status(200).json({status: 'ok', database: login.data})
       return res.status(401).json({status: 'error', error: 'DBPassword or DBToken invalid'});
     }catch(err) {
-      console.log(err)
       return res.status(401).json({status: 'error', error: err.message});
     }
   }
@@ -36,7 +35,6 @@ class userController {
 
   async register(req, res) {
     const data = req.body;
-    console.log(data)
     for(let key of ['DBName', 'DBPassword', 'CreateBy']){
       if(!Object.keys(data).includes(key)) {
         return res.status(401).json({status: 'error', error: 'missing one of the fields DBName or DBPassword'})

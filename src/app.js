@@ -1,12 +1,12 @@
-import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
 
 import dataBaseRoutes from './Routes/databaseRoutes.js'
 import userRoutes from './Routes/userRoutes.js'
-
+import tokenRoutes from './Routes/tokenRoutes.js'
 
 dotenv.config();
 
@@ -44,6 +44,7 @@ class App {
   routes() {
     this.app.use('/user', userRoutes);
     this.app.use('/database', dataBaseRoutes);
+    this.app.use('/token', tokenRoutes)
   }
 }
 
