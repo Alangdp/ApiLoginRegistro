@@ -11,7 +11,6 @@ export default async (req, res, next) => {
     jwt.verify(token, process.env.TOKEN_SECRET);
     next();
   } catch (error) {
-    console.log(error,31231312)
     return res.status(401).json({ status: 'error', error: 'Invalid token' });
   }
 };

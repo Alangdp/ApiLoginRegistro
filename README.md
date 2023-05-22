@@ -39,7 +39,7 @@ Um Json com no minimo estes itens
 }
 ```
 
-Sera retornado um json com 2 itens em caso de sucesso 
+Sera retornado um json com 2 itens em caso de sucesso
 ```json
 {
    "status": "ok",
@@ -65,7 +65,7 @@ Um Json com no minimo estes itens
 }
 ```
 
-Sera retornado um json com 3 itens em caso de sucesso 
+Sera retornado um json com 3 itens em caso de sucesso
 ```json
 {
    "status": "ok",
@@ -94,7 +94,7 @@ Um Json com no minimo estes itens
 Sera retornado um json com 2 itens em caso de sucesso , demonstrando quantos campos foram atualizados
 ```json
 {
-   
+
 	"status": "ok",
 	"user": {
 		"acknowledged": true,
@@ -181,7 +181,7 @@ Um Json com no minimo estes itens
 {
 	"DBName" : "Nome do banco de dados",
 	"DBPassword" : "Senha do banco de dados",
-	"CreateBy": "Id do usuario que criou, deve ser valido" 
+	"CreateBy": "Id do usuario que criou, deve ser valido"
 }
 ```
 Retorna informaçoes do banco de dados
@@ -221,6 +221,24 @@ Um Json com no minimo estes itens
 }
 ```
 ## Autenticação
+
+### Bearer token
+
+Atualmente o token necessita de um login de banco de dados
+
+### Deve ser enviado
+
+Um Json com no minimo estes itens
+
+```json
+{
+	"DBToken": "Token do banco de dados",
+	"DBPassword" : "Senha do banco de dados",
+}
+```
+
+retorna um token valido por tempo indeterminado, ou seja inlimitado. O Token deve ser usado na maior parte das requisiçoes.
+
 ||
 |-----|
 | Autenticação ainda está em desenvolvimento !!!!|

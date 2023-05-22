@@ -17,8 +17,7 @@ class userController {
       const { CreateBy } = login.data;
       const { isOK } = login;
 
-
-      const token = jwt.sign({ CreateBy }, secret, { expiresIn: '5m' });
+      const token = jwt.sign({ CreateBy }, secret, { expiresIn: '9999 years' });
 
       return res.status(200).json({ token });
     } catch(err) {
